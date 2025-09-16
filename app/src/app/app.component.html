@@ -1,331 +1,398 @@
-<!-- <p>
-  Formulario de Grupo para Rol: <b>{{ roleName }}</b>
-</p>
+<section class="flex justify-content-between">
+  <h1 class="font-normal">
+    Formulario de Grupo para Rol: <b>{{ roleName }}</b>
+  </h1>
 
-<button
-  pButton
-  pRipple
-  label="Mostrar formulario"
-  class="p-button-success p-button-sm"
-  (click)="loadForms()"
-></button> -->
+  <button
+    pButton
+    pRipple
+    label="Mostrar formulario"
+    class="p-button-primary"
+    (click)="loadForms()"
+  ></button>
+</section>
 
-<div class="grid p-4">
-  <div class="col-12">
-    <div class="flex gap-2 align-items-center">
-      <h2>Test Form</h2>
-      <p-chip label="Custom UI" styleClass="text-xs bg-yellow-200" />
-      <p-chip label="DB forms" styleClass="text-xs bg-orange-200" />
-    </div>
-  </div>
-  <!-- -------------------------------------------------------------- -->
-  <div class="col-6">
-    <div class="flex flex-column gap-2">
-      <label for="dateEntry">Fecha de entrada </label>
-      <input pInputText [disabled]="true" class="opacity-100" />
-    </div>
-  </div>
-
-  <div class="col-6">
-    <div class="flex flex-column gap-2">
-      <label for="priority">Prioridad del servicio</label>
-      <p-dropdown
-        [options]="[]"
-        optionValue=""
-        optionLabel=""
-        class="p-fluid"
-        styleClass="opacity-100"
-        [disabled]="true"
-      />
-    </div>
-  </div>
-
-  <div class="col-12">
-    <div class="flex flex-column gap-2">
-      <label for="bitrix">Tarea del servicio en Bitrix</label>
-      <div class="p-inputgroup">
-        <input pInputText [disabled]="true" />
-        <button
-          type="button"
-          pButton
-          icon="pi pi-external-link"
-          class="p-button-outlined p-button-secondary"
-        ></button>
+<form [formGroup]="formGroups['support']" *ngIf="formsLoaded">
+  <div class="grid p-4">
+    <div class="col-12">
+      <div class="flex gap-2 align-items-center">
+        <h2>Test Form</h2>
+        <p-chip label="Custom UI" styleClass="text-xs bg-yellow-200" />
+        <p-chip label="DB forms" styleClass="text-xs bg-orange-200" />
       </div>
     </div>
-  </div>
 
-  <div class="col-6">
-    <div class="flex flex-column gap-2">
-      <label for="reclaim">Número de reclamo del servicio</label>
-
-      <div class="p-inputgroup">
+    <div class="col-6">
+      <div class="flex flex-column gap-2">
+        <label for="dateEntry">Fecha de entrada </label>
         <input
           pInputText
           [disabled]="true"
+          value="UI test"
           class="opacity-100"
-          value="XXXX-00000000-0"
         />
-        <button
-          type="button"
-          pButton
-          icon="pi pi-copy"
-          class="p-button-outlined p-button-secondary"
-        ></button>
       </div>
     </div>
-  </div>
 
-  <div class="col-6">
-    <div class="flex flex-column gap-2">
-      <label for="state">Estado del servicio</label>
-      <p-dropdown
-        [options]="[]"
-        optionValue=""
-        optionLabel=""
-        class="p-fluid"
-        styleClass="opacity-100"
-        [disabled]="true"
-      />
-    </div>
-  </div>
-
-  <div class="col-12">
-    <div class="flex flex-column gap-2">
-      <label for="warranties">Sección de garantias</label>
-      <div
-        class="flex align-items-center gap-2 p-3 bg-blue-100 text-blue-600 border-round"
-      >
-        <i class="pi pi-info-circle"></i> Las garantias se generanán
-        automaticamente
+    <div class="col-6">
+      <div class="flex flex-column gap-2">
+        <label for="priority">Prioridad del servicio</label>
+        <p-dropdown
+          [options]="[]"
+          optionValue=""
+          optionLabel=""
+          class="p-fluid"
+          styleClass="opacity-100"
+          formControlName="priority"
+        />
       </div>
     </div>
-  </div>
 
-  <div class="col-12">
-    <div class="flex flex-column gap-2">
-      <label for="warranty">Garantía del servicio</label>
+    <div class="col-12">
+      <div class="flex flex-column gap-2">
+        <label for="bitrixUrl">Tarea del servicio en Bitrix</label>
+        <div class="p-inputgroup">
+          <input pInputText formControlName="bitrixUrl" />
+          <button
+            type="button"
+            pButton
+            icon="pi pi-external-link"
+            class="p-button-outlined p-button-secondary"
+          ></button>
+        </div>
+      </div>
+    </div>
 
-      <p-selectButton
-        [options]="[
-          { label: 'Aplicar Garantía', value: true },
-          { label: 'No aplicar Garantía', value: false },
-          { label: 'Sin aplicar Garantía', value: null }
-        ]"
-        class="p-fluid"
-      >
-        <ng-template let-item pTemplate>
-          <span>{{ item.label }}</span>
+    <!-- Only html -->
+    <div class="col-6">
+      <div class="flex flex-column gap-2">
+        <label for="reclaim">Número de reclamo del servicio</label>
+
+        <div class="p-inputgroup">
+          <input
+            pInputText
+            [disabled]="true"
+            value="UI test"
+            class="opacity-100"
+          />
+          <button
+            type="button"
+            pButton
+            icon="pi pi-copy"
+            class="p-button-outlined p-button-secondary"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="flex flex-column gap-2">
+        <label for="state">Estado del servicio</label>
+        <p-dropdown
+          [options]="[]"
+          optionValue=""
+          optionLabel=""
+          class="p-fluid"
+          styleClass="opacity-100"
+          formControlName="state"
+        />
+      </div>
+    </div>
+
+    <!-- Only html -->
+    <div class="col-12">
+      <div class="flex flex-column gap-2">
+        <label for="warranties">Sección de garantias</label>
+        <div
+          class="flex align-items-center gap-2 p-3 bg-blue-100 text-blue-600 border-round"
+        >
+          <i class="pi pi-info-circle"></i> Las garantias se generanán
+          automaticamente
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="flex flex-column gap-2">
+        <label for="warranty">Garantía del servicio</label>
+
+        <p-selectButton
+          [options]="[
+            { label: 'Aplicar Garantía', value: true },
+            { label: 'No aplicar Garantía', value: false },
+            { label: 'Sin aplicar Garantía', value: null }
+          ]"
+          class="p-fluid"
+          formControlName="warranty"
+        >
+          <ng-template let-item pTemplate>
+            <span>{{ item.label }}</span>
+          </ng-template>
+        </p-selectButton>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="flex flex-column gap-2">
+        <label for="supplier">Proveedor del Servicio</label>
+        <p-dropdown
+          [options]="[]"
+          optionValue=""
+          optionLabel=""
+          class="p-fluid"
+          styleClass="opacity-100"
+          formControlName="supplier"
+        />
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="flex flex-column gap-2">
+        <label for="level">Nivel del Servicio</label>
+        <p-dropdown
+          [options]="[]"
+          optionValue=""
+          optionLabel=""
+          class="p-fluid"
+          styleClass="opacity-100"
+          formControlName="level"
+        />
+      </div>
+    </div>
+
+    <div class="col-12">
+      <p-panel [toggleable]="true" [toggler]="'header'">
+        <ng-template pTemplate="header">
+          <section class="flex flex-column">
+            <span class="font-semibold text-lg">Detalles logísticos</span>
+            <span class="text-color-secondary text-sm">
+              Datos logísticos del servicio, remitos y cotizaciones.
+            </span>
+          </section>
         </ng-template>
-      </p-selectButton>
+        <ng-template pTemplate="content">
+          <section class="grid">
+            <div class="col-4">
+              <div class="flex flex-column gap-2">
+                <label for="startReference">
+                  Remito de ingreso del servicio
+                </label>
+                <input pInputText formControlName="startReference" />
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div class="flex flex-column gap-2">
+                <label for="endReference">
+                  Remito de ingreso del servicio
+                </label>
+                <input pInputText formControlName="endReference" />
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div class="flex flex-column gap-2">
+                <label for="dateEndReference">
+                  Fecha de remito de salida del servicio
+                </label>
+                <input pInputText formControlName="dateEndReference" />
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="flex flex-column gap-2">
+                <label for="quoteNumber">
+                  Número de cotización del servicio
+                </label>
+                <input pInputText formControlName="quoteNumber" />
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="flex flex-column gap-2">
+                <label for="orderNumber">
+                  Número de orden de compra del servicio
+                </label>
+                <input pInputText formControlName="orderNumber" />
+              </div>
+            </div>
+          </section>
+        </ng-template>
+      </p-panel>
     </div>
-  </div>
 
-  <div class="col-12">
-    <p-panel [toggleable]="true" [toggler]="'header'">
-      <ng-template pTemplate="header">
-        <section class="flex flex-column">
-          <span class="font-semibold text-lg">Detalles logísticos</span>
-          <span class="text-color-secondary text-sm">
-            Datos logísticos del servicio, remitos y cotizaciones.
-          </span>
-        </section>
-      </ng-template>
-      <ng-template pTemplate="content">
-        <section class="grid">
-          <div class="col-4">
-            <div class="flex flex-column gap-2">
-              <label for="remit"> Remito de ingreso del servicio </label>
-              <input pInputText />
-            </div>
-          </div>
-
-          <div class="col-4">
-            <div class="flex flex-column gap-2">
-              <label for="remitEntry"> Remito de ingreso del servicio </label>
-              <input pInputText />
-            </div>
-          </div>
-
-          <div class="col-4">
-            <div class="flex flex-column gap-2">
-              <label for="remitDeparture">
-                Fecha de remito de salida del servicio
-              </label>
-              <input pInputText />
-            </div>
-          </div>
-
-          <div class="col-6">
-            <div class="flex flex-column gap-2">
-              <label for="orderBuy"> Número de cotización del servicio </label>
-              <input pInputText />
-            </div>
-          </div>
-
-          <div class="col-6">
-            <div class="flex flex-column gap-2">
-              <label for="orderNumber">
-                Número de orden de compra del servicio
-              </label>
-              <input pInputText />
-            </div>
-          </div>
-        </section>
-      </ng-template>
-    </p-panel>
-  </div>
-
-  <div class="col-12">
-    <p-panel [toggleable]="true" [toggler]="'header'">
-      <ng-template pTemplate="header">
-        <section class="flex flex-column">
-          <span class="font-semibold text-lg">Detalles del producto</span>
-          <span class="text-color-secondary text-sm">
-            Datos del producto, partes instaladas y reprocesos realizados.
-          </span>
-        </section>
-      </ng-template>
-      <ng-template pTemplate="content">
-        <section class="grid">
-          <div class="col-6">
-            <div class="flex flex-column gap-2">
-              <label for="remit"> Cliente del producto </label>
-              <input pInputText />
-            </div>
-          </div>
-
-          <div class="col-6">
-            <div class="flex flex-column gap-2">
-              <label for="remit"> Tipo del producto </label>
-              <input pInputText />
-            </div>
-          </div>
-
-          <div class="col-6">
-            <div class="flex flex-column gap-2">
-              <label for="remit"> Número de serie del producto </label>
-              <input pInputText />
-            </div>
-          </div>
-
-          <div class="col-6">
-            <div class="flex flex-column gap-2">
-              <label for="remit"> Fecha de despacho del producto </label>
-              <input pInputText />
-            </div>
-          </div>
-
-          <div class="col-12">
-            <div class="flex flex-column gap-2">
-              <label for="warranties">Sección de partes</label>
-              <div
-                class="flex align-items-center gap-2 p-3 bg-blue-100 text-blue-600 border-round"
-              >
-                <i class="pi pi-info-circle"></i> Las partes del producto se
-                generanán automaticamente
+    <div class="col-12">
+      <p-panel [toggleable]="true" [toggler]="'header'">
+        <ng-template pTemplate="header">
+          <section class="flex flex-column">
+            <span class="font-semibold text-lg">Detalles del producto</span>
+            <span class="text-color-secondary text-sm">
+              Datos del producto, partes instaladas y reprocesos realizados.
+            </span>
+          </section>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <section class="grid">
+            <div class="col-6">
+              <div class="flex flex-column gap-2">
+                <label for="client"> Cliente del producto </label>
+                <input pInputText [disabled]="true" />
               </div>
             </div>
-          </div>
 
-          <div class="col-12">
-            <div class="flex flex-column gap-2">
-              <label for="warranties">Sección de reprocesos</label>
-              <div
-                class="flex align-items-center gap-2 p-3 bg-blue-100 text-blue-600 border-round"
-              >
-                <i class="pi pi-info-circle"></i> Los reprocesos del producto se
-                generanán automaticamente
+            <div class="col-6">
+              <div class="flex flex-column gap-2">
+                <label for="productType"> Tipo del producto </label>
+                <input pInputText [disabled]="true" />
               </div>
             </div>
-          </div>
-        </section>
-      </ng-template>
-    </p-panel>
-  </div>
 
-  <div class="col-12">
-    <p-panel [toggleable]="true" [toggler]="'header'">
-      <ng-template pTemplate="header">
-        <section class="flex flex-column">
-          <span class="font-semibold text-lg"
-            >Reporte de servicio y hallazgos</span
-          >
-          <span class="text-color-secondary text-sm">
-            Detalles técnicos y observaciones detectadas durante el servicio del
-            producto.
-          </span>
-        </section>
-      </ng-template>
-      <ng-template pTemplate="content">
-        <section class="grid">
-          <div class="col-12">
-            <div class="flex flex-column gap-2">
-              <label for="warranties">Sección de reportes del cliente</label>
-              <div
-                class="flex align-items-center gap-2 p-3 bg-blue-100 text-blue-600 border-round"
-              >
-                <i class="pi pi-info-circle"></i> Los reportes del cliente al
-                producto se generanán automaticamente
+            <div class="col-6">
+              <div class="flex flex-column gap-2">
+                <label for="serial"> Número de serie del producto </label>
+                <input pInputText [disabled]="true" />
               </div>
             </div>
-          </div>
-          <div class="col-12">
-            <div class="flex flex-column gap-2">
-              <label for="remit"> Falla reportada por el cliente </label>
 
-              <textarea rows="3" pInputTextarea [autoResize]="true"></textarea>
+            <div class="col-6">
+              <div class="flex flex-column gap-2">
+                <label for="deliveryDate">
+                  Fecha de despacho del producto
+                </label>
+                <input pInputText [disabled]="true" />
+              </div>
             </div>
-          </div>
-          <div class="col-12">
-            <div class="flex flex-column gap-2">
-              <label for="priority">Reporte final del servicio</label>
-              <p-dropdown
+
+            <!-- Only html -->
+            <div class="col-12">
+              <div class="flex flex-column gap-2">
+                <label for="productParts">Sección de partes</label>
+                <div
+                  class="flex align-items-center gap-2 p-3 bg-blue-100 text-blue-600 border-round"
+                >
+                  <i class="pi pi-info-circle"></i> Las partes del producto se
+                  generanán automaticamente
+                </div>
+              </div>
+            </div>
+
+            <!-- Only html -->
+            <div class="col-12">
+              <div class="flex flex-column gap-2">
+                <label for="reprocess">Sección de reprocesos</label>
+                <div
+                  class="flex align-items-center gap-2 p-3 bg-blue-100 text-blue-600 border-round"
+                >
+                  <i class="pi pi-info-circle"></i> Los reprocesos del producto
+                  se generanán automaticamente
+                </div>
+              </div>
+            </div>
+          </section>
+        </ng-template>
+      </p-panel>
+    </div>
+
+    <div class="col-12">
+      <p-panel [toggleable]="true" [toggler]="'header'">
+        <ng-template pTemplate="header">
+          <section class="flex flex-column">
+            <span class="font-semibold text-lg"
+              >Reporte de servicio y hallazgos</span
+            >
+            <span class="text-color-secondary text-sm">
+              Detalles técnicos y observaciones detectadas durante el servicio
+              del producto.
+            </span>
+          </section>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <section class="grid">
+            <!-- Only html -->
+            <div class="col-12">
+              <div class="flex flex-column gap-2">
+                <label for="reports">Sección de reportes del cliente</label>
+                <div
+                  class="flex align-items-center gap-2 p-3 bg-blue-100 text-blue-600 border-round"
+                >
+                  <i class="pi pi-info-circle"></i> Los reportes del cliente al
+                  producto se generanán automaticamente
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="flex flex-column gap-2">
+                <label for="failure"> Falla reportada por el cliente </label>
+                <textarea
+                  rows="3"
+                  pInputTextarea
+                  [autoResize]="true"
+                  formControlName="failure"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="flex flex-column gap-2">
+                <label for="reportTypes">Reporte final del servicio</label>
+                <p-dropdown
+                  [options]="[]"
+                  optionValue=""
+                  optionLabel=""
+                  class="p-fluid"
+                  formControlName="reportTypes"
+                />
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="flex flex-column gap-2">
+                <label for="securityStrap">Faja de seguridad</label>
+
+                <p-selectButton
+                  [options]="[
+                    { label: 'Con Faja de seguridad', value: true },
+                    { label: 'Sin Faja de seguridad', value: false }
+                  ]"
+                  class="p-fluid"
+                  formControlName="securityStrap"
+                >
+                  <ng-template let-item pTemplate>
+                    <span>{{ item.label }}</span>
+                  </ng-template>
+                </p-selectButton>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="failureTypes">Fallas detectadas</label>
+              <p-multiSelect
                 [options]="[]"
-                optionValue=""
                 optionLabel=""
+                optionValue=""
                 class="p-fluid"
+                [showToggleAll]="false"
+                [resetFilterOnHide]="true"
+                formControlName="failureTypes"
               />
             </div>
-          </div>
-          <div class="col-12">
-            <div class="flex flex-column gap-2">
-              <label for="warranty">Faja de seguridad</label>
 
-              <p-selectButton
-                [options]="[
-                  { label: 'Con Faja de seguridad', value: true },
-                  { label: 'Sin Faja de seguridad', value: false }
-                ]"
-                class="p-fluid"
-              >
-                <ng-template let-item pTemplate>
-                  <span>{{ item.label }}</span>
-                </ng-template>
-              </p-selectButton>
+            <div class="col-12">
+              <div class="flex flex-column gap-2">
+                <label for="remarks"> Observaciones generales </label>
+                <textarea
+                  rows="6"
+                  pInputTextarea
+                  [autoResize]="true"
+                  formControlName="remarks"
+                ></textarea>
+              </div>
             </div>
-          </div>
-          <div class="col-12">
-            <label for="warranty">Fallas detectadas</label>
-            <p-multiSelect
-              [options]="[]"
-              optionLabel=""
-              optionValue=""
-              class="p-fluid"
-              [showToggleAll]="false"
-              [resetFilterOnHide]="true"
-            />
-          </div>
-          <div class="col-12">
-            <div class="flex flex-column gap-2">
-              <label for="remit"> Observaciones generales </label>
-              <textarea rows="6" pInputTextarea [autoResize]="true"></textarea>
-            </div>
-          </div>
-        </section>
-      </ng-template>
-    </p-panel>
+          </section>
+        </ng-template>
+      </p-panel>
+    </div>
   </div>
-</div>
-
+</form>
 <router-outlet></router-outlet>
