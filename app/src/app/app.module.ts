@@ -12,6 +12,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { PanelModule } from 'primeng/panel';
@@ -32,6 +34,8 @@ import { PanelModule } from 'primeng/panel';
     MultiSelectModule,
     InputTextareaModule,
     SelectButtonModule,
+    CalendarModule,
+    InputSwitchModule,
     ButtonModule,
     ChipModule,
     PanelModule,

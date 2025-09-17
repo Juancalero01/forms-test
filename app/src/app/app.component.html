@@ -1,22 +1,12 @@
-<section class="flex justify-content-between">
-  <h1 class="font-normal">
-    Formulario de Grupo para Rol: <b>{{ roleName }}</b>
-  </h1>
-
-  <button
-    pButton
-    pRipple
-    label="Mostrar formulario"
-    class="p-button-primary"
-    (click)="loadForms()"
-  ></button>
+<section class="flex gap-2 pb-2 align-items-center">
+  <span>Test:</span>
+  <p-chip [label]="roleName" styleClass="text-xs bg-bluegray-100 font-bold" />
 </section>
-
 <form [formGroup]="formGroups['support']" *ngIf="formsLoaded">
   <div class="grid p-4">
     <div class="col-12">
       <div class="flex gap-2 align-items-center">
-        <h2>Test Form</h2>
+        <h2>Formulario granular</h2>
         <p-chip label="Custom UI" styleClass="text-xs bg-yellow-200" />
         <p-chip label="DB forms" styleClass="text-xs bg-orange-200" />
       </div>
@@ -28,19 +18,19 @@
         <input
           pInputText
           [disabled]="true"
-          value="UI test"
-          class="opacity-100"
+          value="UI"
+          class="opacity-100 bg-bluegray-100"
         />
       </div>
     </div>
 
-    <div class="col-6">
+    <div class="col-6" *ngIf="getField('support', 'priority').canRead">
       <div class="flex flex-column gap-2">
         <label for="priority">Prioridad del servicio</label>
         <p-dropdown
-          [options]="[]"
-          optionValue=""
-          optionLabel=""
+          [options]="getField('support', 'priority')?.options"
+          optionValue="value"
+          optionLabel="label"
           class="p-fluid"
           styleClass="opacity-100"
           formControlName="priority"
@@ -48,11 +38,11 @@
       </div>
     </div>
 
-    <div class="col-12">
+    <div class="col-12" *ngIf="getField('support', 'bitrixUrl').canRead">
       <div class="flex flex-column gap-2">
         <label for="bitrixUrl">Tarea del servicio en Bitrix</label>
         <div class="p-inputgroup">
-          <input pInputText formControlName="bitrixUrl" />
+          <input pInputText formControlName="bitrixUrl" class="opacity-100" />
           <button
             type="button"
             pButton
@@ -67,13 +57,12 @@
     <div class="col-6">
       <div class="flex flex-column gap-2">
         <label for="reclaim">Número de reclamo del servicio</label>
-
         <div class="p-inputgroup">
           <input
             pInputText
             [disabled]="true"
-            value="UI test"
-            class="opacity-100"
+            value="UI"
+            class="opacity-100 bg-bluegray-100"
           />
           <button
             type="button"
@@ -85,13 +74,13 @@
       </div>
     </div>
 
-    <div class="col-6">
+    <div class="col-6" *ngIf="getField('support', 'state').canRead">
       <div class="flex flex-column gap-2">
         <label for="state">Estado del servicio</label>
         <p-dropdown
-          [options]="[]"
-          optionValue=""
-          optionLabel=""
+          [options]="getField('support', 'state')?.options || []"
+          optionValue="value"
+          optionLabel="label"
           class="p-fluid"
           styleClass="opacity-100"
           formControlName="state"
@@ -112,33 +101,38 @@
       </div>
     </div>
 
-    <div class="col-12">
+    <div class="col-12" *ngIf="getField('support', 'warranty').canRead">
       <div class="flex flex-column gap-2">
         <label for="warranty">Garantía del servicio</label>
-
         <p-selectButton
-          [options]="[
-            { label: 'Aplicar Garantía', value: true },
-            { label: 'No aplicar Garantía', value: false },
-            { label: 'Sin aplicar Garantía', value: null }
-          ]"
+          [options]="getField('support', 'warranty')?.options"
+          optionValue="value"
+          optionLabel="label"
           class="p-fluid"
+          styleClass="opacity-100"
           formControlName="warranty"
         >
           <ng-template let-item pTemplate>
             <span>{{ item.label }}</span>
           </ng-template>
         </p-selectButton>
+        <div
+          class="flex align-items-center gap-2 p-3 bg-yellow-100 text-yellow-600 border-round"
+          *ngIf="formGroups['support'].get('warranty')?.value === null"
+        >
+          <i class="pi pi-info-circle"></i> Por favor contacte a un
+          administrador para asignar la garantía correcta al servicio
+        </div>
       </div>
     </div>
 
-    <div class="col-6">
+    <div class="col-6" *ngIf="getField('support', 'supplier').canRead">
       <div class="flex flex-column gap-2">
         <label for="supplier">Proveedor del Servicio</label>
         <p-dropdown
-          [options]="[]"
-          optionValue=""
-          optionLabel=""
+          [options]="getField('support', 'supplier')?.options || []"
+          optionValue="value"
+          optionLabel="label"
           class="p-fluid"
           styleClass="opacity-100"
           formControlName="supplier"
@@ -146,13 +140,13 @@
       </div>
     </div>
 
-    <div class="col-6">
+    <div class="col-6" *ngIf="getField('support', 'level').canRead">
       <div class="flex flex-column gap-2">
         <label for="level">Nivel del Servicio</label>
         <p-dropdown
-          [options]="[]"
-          optionValue=""
-          optionLabel=""
+          [options]="getField('support', 'level')?.options || []"
+          optionValue="value"
+          optionLabel="label"
           class="p-fluid"
           styleClass="opacity-100"
           formControlName="level"
@@ -160,8 +154,9 @@
       </div>
     </div>
 
+    <!-- Detalles logísticos -->
     <div class="col-12">
-      <p-panel [toggleable]="true" [toggler]="'header'">
+      <p-panel [toggleable]="true" toggler="header">
         <ng-template pTemplate="header">
           <section class="flex flex-column">
             <span class="font-semibold text-lg">Detalles logísticos</span>
@@ -172,48 +167,84 @@
         </ng-template>
         <ng-template pTemplate="content">
           <section class="grid">
-            <div class="col-4">
+            <div
+              class="col-4"
+              *ngIf="getField('support', 'startReference').canRead"
+            >
               <div class="flex flex-column gap-2">
                 <label for="startReference">
                   Remito de ingreso del servicio
                 </label>
-                <input pInputText formControlName="startReference" />
+                <input
+                  pInputText
+                  formControlName="startReference"
+                  class="opacity-100"
+                />
               </div>
             </div>
 
-            <div class="col-4">
+            <div
+              class="col-4"
+              *ngIf="getField('support', 'endReference').canRead"
+            >
               <div class="flex flex-column gap-2">
                 <label for="endReference">
-                  Remito de ingreso del servicio
+                  Remito de salida del servicio
                 </label>
-                <input pInputText formControlName="endReference" />
+                <input
+                  pInputText
+                  formControlName="endReference"
+                  class="opacity-100"
+                />
               </div>
             </div>
 
-            <div class="col-4">
+            <div
+              class="col-4"
+              *ngIf="getField('support', 'dateEndReference').canRead"
+            >
               <div class="flex flex-column gap-2">
                 <label for="dateEndReference">
                   Fecha de remito de salida del servicio
                 </label>
-                <input pInputText formControlName="dateEndReference" />
+                <p-calendar
+                  formControlName="dateEndReference"
+                  class="p-fluid"
+                  styleClass="opacity-100"
+                  appendTo="body"
+                />
               </div>
             </div>
 
-            <div class="col-6">
+            <div
+              class="col-6"
+              *ngIf="getField('support', 'quoteNumber').canRead"
+            >
               <div class="flex flex-column gap-2">
                 <label for="quoteNumber">
                   Número de cotización del servicio
                 </label>
-                <input pInputText formControlName="quoteNumber" />
+                <input
+                  pInputText
+                  formControlName="quoteNumber"
+                  class="opacity-100"
+                />
               </div>
             </div>
 
-            <div class="col-6">
+            <div
+              class="col-6"
+              *ngIf="getField('support', 'orderNumber').canRead"
+            >
               <div class="flex flex-column gap-2">
                 <label for="orderNumber">
                   Número de orden de compra del servicio
                 </label>
-                <input pInputText formControlName="orderNumber" />
+                <input
+                  pInputText
+                  formControlName="orderNumber"
+                  class="opacity-100"
+                />
               </div>
             </div>
           </section>
@@ -221,8 +252,9 @@
       </p-panel>
     </div>
 
+    <!-- Detalles del producto -->
     <div class="col-12">
-      <p-panel [toggleable]="true" [toggler]="'header'">
+      <p-panel [toggleable]="true" toggler="header">
         <ng-template pTemplate="header">
           <section class="flex flex-column">
             <span class="font-semibold text-lg">Detalles del producto</span>
@@ -236,21 +268,36 @@
             <div class="col-6">
               <div class="flex flex-column gap-2">
                 <label for="client"> Cliente del producto </label>
-                <input pInputText [disabled]="true" />
+                <input
+                  pInputText
+                  [disabled]="true"
+                  value="UI"
+                  class="opacity-100 bg-bluegray-100"
+                />
               </div>
             </div>
 
             <div class="col-6">
               <div class="flex flex-column gap-2">
                 <label for="productType"> Tipo del producto </label>
-                <input pInputText [disabled]="true" />
+                <input
+                  pInputText
+                  [disabled]="true"
+                  value="UI"
+                  class="opacity-100 bg-bluegray-100"
+                />
               </div>
             </div>
 
             <div class="col-6">
               <div class="flex flex-column gap-2">
                 <label for="serial"> Número de serie del producto </label>
-                <input pInputText [disabled]="true" />
+                <input
+                  pInputText
+                  [disabled]="true"
+                  value="UI"
+                  class="opacity-100 bg-bluegray-100"
+                />
               </div>
             </div>
 
@@ -259,7 +306,12 @@
                 <label for="deliveryDate">
                   Fecha de despacho del producto
                 </label>
-                <input pInputText [disabled]="true" />
+                <input
+                  pInputText
+                  [disabled]="true"
+                  value="UI"
+                  class="opacity-100 bg-bluegray-100"
+                />
               </div>
             </div>
 
@@ -293,8 +345,9 @@
       </p-panel>
     </div>
 
+    <!-- Reporte de servicio y hallazgos -->
     <div class="col-12">
-      <p-panel [toggleable]="true" [toggler]="'header'">
+      <p-panel [toggleable]="true" toggler="header">
         <ng-template pTemplate="header">
           <section class="flex flex-column">
             <span class="font-semibold text-lg"
@@ -321,7 +374,7 @@
               </div>
             </div>
 
-            <div class="col-12">
+            <div class="col-12" *ngIf="getField('support', 'failure').canRead">
               <div class="flex flex-column gap-2">
                 <label for="failure"> Falla reportada por el cliente </label>
                 <textarea
@@ -333,28 +386,34 @@
               </div>
             </div>
 
-            <div class="col-12">
+            <div
+              class="col-12"
+              *ngIf="getField('support', 'reportTypes').canRead"
+            >
               <div class="flex flex-column gap-2">
                 <label for="reportTypes">Reporte final del servicio</label>
                 <p-dropdown
-                  [options]="[]"
-                  optionValue=""
-                  optionLabel=""
+                  [options]="getField('support', 'reportTypes')?.options || []"
+                  optionValue="value"
+                  optionLabel="label"
                   class="p-fluid"
                   formControlName="reportTypes"
                 />
               </div>
             </div>
 
-            <div class="col-12">
+            <div
+              class="col-12"
+              *ngIf="getField('support', 'securityStrap').canRead"
+            >
               <div class="flex flex-column gap-2">
                 <label for="securityStrap">Faja de seguridad</label>
-
                 <p-selectButton
-                  [options]="[
-                    { label: 'Con Faja de seguridad', value: true },
-                    { label: 'Sin Faja de seguridad', value: false }
-                  ]"
+                  [options]="
+                    getField('support', 'securityStrap')?.options || []
+                  "
+                  optionValue="value"
+                  optionLabel="label"
                   class="p-fluid"
                   formControlName="securityStrap"
                 >
@@ -365,12 +424,15 @@
               </div>
             </div>
 
-            <div class="col-12">
+            <div
+              class="col-12"
+              *ngIf="getField('support', 'failureTypes').canRead"
+            >
               <label for="failureTypes">Fallas detectadas</label>
               <p-multiSelect
-                [options]="[]"
-                optionLabel=""
-                optionValue=""
+                [options]="getField('support', 'failureTypes')?.options || []"
+                optionValue="value"
+                optionLabel="label"
                 class="p-fluid"
                 [showToggleAll]="false"
                 [resetFilterOnHide]="true"
@@ -378,7 +440,7 @@
               />
             </div>
 
-            <div class="col-12">
+            <div class="col-12" *ngIf="getField('support', 'remarks').canRead">
               <div class="flex flex-column gap-2">
                 <label for="remarks"> Observaciones generales </label>
                 <textarea
@@ -392,6 +454,21 @@
           </section>
         </ng-template>
       </p-panel>
+    </div>
+
+    <div class="col-12">
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="Salir"
+          styleClass="p-button-secondary p-button-sm"
+          (onClick)="cancelForm()"
+        />
+        <p-button
+          label="Editar"
+          (onClick)="saveForm()"
+          styleClass="p-button-sm"
+        />
+      </div>
     </div>
   </div>
 </form>

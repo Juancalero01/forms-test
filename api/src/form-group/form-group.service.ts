@@ -84,6 +84,7 @@ export class FormGroupService {
           const allOptions = field.optionsJson
             ? JSON.parse(field.optionsJson)
             : null;
+
           const allowedValues = field.dataPermissions
             .filter((dp) => dp.role.id === role.id)
             .map((dp) => dp.allowedValue);
@@ -95,9 +96,6 @@ export class FormGroupService {
 
           return {
             name: field.name,
-            label: field.label,
-            type: field.type,
-            isRequired: field.isRequired,
             canRead,
             canEdit,
             options: filteredOptions,
