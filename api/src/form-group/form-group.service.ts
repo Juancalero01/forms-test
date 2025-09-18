@@ -86,12 +86,14 @@ export class FormGroupService {
             : null;
 
           const allowedValues = field.dataPermissions
-            .filter((dp) => dp.role.id === role.id)
-            .map((dp) => dp.allowedValue);
+            .filter((dp: any) => dp.role.id === role.id)
+            .map((dp: any) => dp.allowedValue);
 
           const filteredOptions =
             allowedValues.length && allOptions
-              ? allOptions.filter((opt) => allowedValues.includes(opt.value))
+              ? allOptions.filter((opt: any) => {
+                  return allowedValues.includes(String(opt.value));
+                })
               : allOptions;
 
           return {
