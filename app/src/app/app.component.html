@@ -1,13 +1,20 @@
 <section class="flex gap-2 pb-2 align-items-center">
-  <span>Test:</span>
-  <p-chip [label]="roleName" styleClass="text-xs bg-bluegray-100 font-bold" />
+  <p-chip
+    [label]="roleName"
+    styleClass="text-xs bg-blue-100 font-bold uppercase"
+  />
+  <i
+    *ngIf="!formsLoaded"
+    class="pi pi-spin pi-spinner text-blue-600"
+    style="font-size: 1rem"
+  ></i>
 </section>
 <form [formGroup]="formGroups['support']" *ngIf="formsLoaded">
   <div class="grid p-4">
     <div class="col-12">
       <div class="flex justify-content-between align-items-center">
         <div class="flex gap-2 align-items-center">
-          <h2>Formulario granular</h2>
+          <h2>Formulario</h2>
           <p-chip label="Custom UI" styleClass="text-xs bg-yellow-200" />
           <p-chip label="DB forms" styleClass="text-xs bg-orange-200" />
         </div>

@@ -1,9 +1,9 @@
 {
-  "priority": 2,
+  "priority": "2",
   "bitrixUrl": "https://controlnet.bitrix24.es/",
-  "state": 1,
+  "state": "1",
   "warranty": null,
-  "supplier": 1,
+  "supplier": "1",
   "level": null,
   "startReference": "REF-001",
   "endReference": "END-REF-002",
@@ -11,8 +11,8 @@
   "quoteNumber": null,
   "orderNumber": null,
   "failure": "No enciende",
-  "reportTypes": null,
+  "reportTypes": ["1"],
   "securityStrap": true,
-  "failureTypes": null,
+  "failureTypes": ["1", "3"],
   "remarks": "Revisión de sistema y actualización de software."
 }

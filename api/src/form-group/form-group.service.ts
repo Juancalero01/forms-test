@@ -39,6 +39,44 @@ export class FormGroupService {
   }
 
   async getGroupStructure(groupId: number, roleName: string): Promise<any> {
+    const STATIC_OPTIONS: Record<string, { label: string; value: string }[]> = {
+      priority: [
+        { label: 'Inmediata', value: '1' },
+        { label: 'Alta', value: '2' },
+        { label: 'Media', value: '3' },
+        { label: 'Baja', value: '4' },
+      ],
+      state: [
+        { label: 'Ingresado a controlnet', value: '1' },
+        { label: 'Ingresado a servicio técnico', value: '2' },
+        { label: 'Inspección técnica', value: '3' },
+        { label: 'Espera de repuestos', value: '4' },
+        { label: 'Espera de aprobación de cotización', value: '5' },
+        { label: 'En reparación', value: '6' },
+        { label: 'No reparado', value: '7' },
+        { label: 'Reparado', value: '8' },
+        { label: 'Testing de Salida', value: '9' },
+        { label: 'Listo para entregar', value: '10' },
+        { label: 'Enviado', value: '11' },
+        { label: 'Cerrado', value: '12' },
+        { label: 'Cancelado', value: '13' },
+      ],
+      reportTypes: [
+        { label: 'Reporte de diagnóstico', value: '1' },
+        { label: 'Reporte de reparación', value: '2' },
+        { label: 'Reporte de mantenimiento', value: '3' },
+        { label: 'Otro', value: '4' },
+      ],
+      failureTypes: [
+        { label: 'Hardware', value: '1' },
+        { label: 'Software', value: '2' },
+        { label: 'Mantenimiento', value: '3' },
+        { label: 'Otro', value: '4' },
+      ],
+      supplier: [],
+      level: [],
+    };
+
     const role = await this.roleRepository.findOne({
       where: { name: roleName },
     });
@@ -81,9 +119,12 @@ export class FormGroupService {
             (p) => p.action.name === 'update' && p.isAllowed,
           );
 
-          const allOptions = field.optionsJson
+          let allOptions = field.optionsJson
             ? JSON.parse(field.optionsJson)
             : null;
+
+          if (!allOptions && STATIC_OPTIONS[field.name] && canRead)
+            allOptions = STATIC_OPTIONS[field.name];
 
           const allowedValues = field.dataPermissions
             .filter((dp: any) => dp.role.id === role.id)

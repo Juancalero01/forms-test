@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent {
   formGroups: { [formName: string]: FormGroup } = {};
   fieldsByForm: { [formName: string]: any[] } = {};
-  roleName: string = 'superadmin';
+  roleName: string = 'tech-B';
   formsLoaded = false;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -27,8 +27,6 @@ export class AppComponent {
           this.fieldsByForm[form.formName] = form.fields;
           this.formGroups[form.formName] = this.buildForm(form.fields);
         });
-
-        this.formsLoaded = true;
       });
   }
 
@@ -66,6 +64,7 @@ export class AppComponent {
   loadData() {
     this.http.get('../assets/data.json').subscribe((data: any) => {
       this.formGroups['support'].patchValue(data);
+      this.formsLoaded = true;
     });
   }
 }
