@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent {
   formGroups: { [formName: string]: FormGroup } = {};
   fieldsByForm: { [formName: string]: any[] } = {};
-  roleName: string = 'tech-B';
+  roleName: string = 'superadmin';
   formsLoaded = false;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -66,5 +66,10 @@ export class AppComponent {
       this.formGroups['support'].patchValue(data);
       this.formsLoaded = true;
     });
+  }
+
+  openBitrixTask() {
+    const bitrixUrl = this.formGroups['support'].get('bitrixUrl')?.value;
+    window.open(bitrixUrl, '_blank');
   }
 }
