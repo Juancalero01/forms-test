@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm/repository/Repository';
 import { CreateFormGroupDto } from './dto/create-form-group.dto';
@@ -73,8 +73,17 @@ export class FormGroupService {
         { label: 'Mantenimiento', value: '3' },
         { label: 'Otro', value: '4' },
       ],
-      supplier: [],
-      level: [],
+      supplier: [
+        { label: 'Proveedor A', value: '1' },
+        { label: 'Proveedor B', value: '2' },
+        { label: 'Proveedor C', value: '3' },
+      ],
+      level: [
+        { label: 'Nivel 1', value: '1' },
+        { label: 'Nivel 2', value: '2' },
+        { label: 'Nivel 3', value: '3' },
+        { label: 'Nivel 4', value: '4' },
+      ],
     };
 
     const role = await this.roleRepository.findOne({
@@ -154,10 +163,12 @@ export class FormGroupService {
       }),
     );
 
-    return {
+    const data = {
       groupId: group.id,
       groupName: group.name,
       forms,
     };
+
+    return data;
   }
 }

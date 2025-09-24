@@ -99,14 +99,11 @@
     </div>
 
     <div class="col-12" *ngIf="getField('support', 'warranty').canRead">
-      <div class="flex flex-column gap-2">
-        <label for="warranties">Sección de garantias</label>
-        <div
-          class="flex flex-column align-items-center justify-content-center gap-2 p-3 bg-gray-100 text-gray-600 border-round w-full"
-        >
-          <i class="pi pi-info-circle text-4xl"></i> Las garantias se generarán
-          automaticamente
-        </div>
+      <div
+        class="flex flex-column align-items-center justify-content-center gap-2 p-3 bg-gray-100 text-gray-600 border-round w-full"
+      >
+        <i class="pi pi-info-circle text-4xl"></i> Las garantias se generarán
+        automaticamente
       </div>
     </div>
 
@@ -410,15 +407,28 @@
         <ng-template pTemplate="content">
           <section class="grid">
             <div class="col-12" *ngIf="getField('support', 'failure').canRead">
-              <div class="flex flex-column gap-2">
-                <label for="reports">Sección de reportes del cliente</label>
-                <div
-                  class="flex align-items-center gap-2 p-3 bg-blue-100 text-blue-600 border-round"
-                >
-                  <i class="pi pi-info-circle"></i> Los reportes del cliente al
-                  producto se generanán automaticamente
-                </div>
-              </div>
+              <p-panel [toggleable]="true" toggler="header">
+                <ng-template pTemplate="header">
+                  <section class="flex flex-column">
+                    <span class="font-semibold text-lg"
+                      >Reportes del cliente</span
+                    >
+                    <span class="text-color-secondary text-sm">
+                      Reportes del cliente al producto.
+                    </span>
+                  </section>
+                </ng-template>
+                <ng-template pTemplate="content">
+                  <section class="grid">
+                    <div
+                      class="flex flex-column align-items-center justify-content-center gap-2 p-3 bg-gray-100 text-gray-600 border-round w-full"
+                    >
+                      <i class="pi pi-info-circle text-4xl"></i> Los reportes
+                      del cliente se generarán automaticamente
+                    </div>
+                  </section>
+                </ng-template>
+              </p-panel>
             </div>
 
             <div class="col-12" *ngIf="getField('support', 'failure').canRead">
