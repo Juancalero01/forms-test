@@ -14,6 +14,8 @@ import { FieldPermissionModule } from './field-permission/field-permission.modul
 import { FieldDataPermission } from './field-data-permission/entities/field-data-permission.entity';
 import { FormGroupModule } from './form-group/form-group.module';
 import { FormGroupMembershipModule } from './form-group-membership/form-group-membership.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import KeyvRedis from '@keyv/redis';
 
 @Module({
   imports: [
@@ -26,6 +28,20 @@ import { FormGroupMembershipModule } from './form-group-membership/form-group-me
       database: 'api_db',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
+    }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => {
+        return {
+          stores: [
+            new KeyvRedis('redis://127.0.0.1:6379'),
+            // new Keyv({
+            //   store: new CacheableMemory({ ttl: 60000, lruSize: 5000 }),
+            // }),
+          ],
+          ttl: 60000,
+        };
+      },
     }),
     UserModule,
     RoleModule,

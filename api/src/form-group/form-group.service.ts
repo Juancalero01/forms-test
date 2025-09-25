@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Inject } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm/repository/Repository';
 import { CreateFormGroupDto } from './dto/create-form-group.dto';
@@ -6,10 +6,12 @@ import { UpdateFormGroupDto } from './dto/update-form-group.dto';
 import { FormGroup } from 'src/form-group/entities/form-group.entity';
 import { FormField } from 'src/form-field/entities/form-field.entity';
 import { Role } from 'src/role/entities/role.entity';
-
+import { Cache } from 'cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 @Injectable()
 export class FormGroupService {
   constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectRepository(FormGroup)
     private readonly formGroupRepository: Repository<FormGroup>,
     @InjectRepository(FormField)
@@ -39,6 +41,11 @@ export class FormGroupService {
   }
 
   async getGroupStructure(groupId: number, roleName: string): Promise<any> {
+    const cacheKey = `group_structure_${groupId}_${roleName}`;
+    let cachedData = await this.cacheManager.get(cacheKey);
+
+    if (cachedData) return cachedData;
+
     const STATIC_OPTIONS: Record<string, { label: string; value: string }[]> = {
       priority: [
         { label: 'Inmediata', value: '1' },
@@ -169,6 +176,7 @@ export class FormGroupService {
       forms,
     };
 
+    await this.cacheManager.set(cacheKey, data);
     return data;
   }
 }
