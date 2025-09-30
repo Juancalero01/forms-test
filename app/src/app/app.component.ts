@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -9,25 +10,11 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent {
   formGroups: { [formName: string]: FormGroup } = {};
   fieldsByForm: { [formName: string]: any[] } = {};
-  roleName: string = 'superadmin';
+  roleName: string = 'admin';
   formsLoaded = false;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
-    this.loadForms();
-    setTimeout(() => {
-      this.loadData();
-    }, 2000);
-  }
-
-  loadForms() {
-    this.http
-      .get(`http://localhost:3000/form-group/1?role=${this.roleName}`)
-      .subscribe((data: any) => {
-        data.forms.forEach((form: any) => {
-          this.fieldsByForm[form.formName] = form.fields;
-          this.formGroups[form.formName] = this.buildForm(form.fields);
-        });
-      });
+    this.loadFormsAndData();
   }
 
   buildForm(fields: any[]): FormGroup {
@@ -51,25 +38,40 @@ export class AppComponent {
 
     Object.keys(formGroup.controls).forEach((key) => {
       const control = formGroup.get(key);
-      if (control?.dirty) {
-        changedValues[key] = control.value;
-      }
+      if (control?.dirty) changedValues[key] = control.value;
     });
+
+    console.log('Changed Values to Save:', changedValues);
   }
 
   cancelForm() {
     this.formGroups['support'].reset();
   }
 
-  loadData() {
-    this.http.get('../assets/data.json').subscribe((data: any) => {
-      this.formGroups['support'].patchValue(data);
-      this.formsLoaded = true;
-    });
-  }
-
   openBitrixTask() {
     const bitrixUrl = this.formGroups['support'].get('bitrixUrl')?.value;
     window.open(bitrixUrl, '_blank');
+  }
+
+  loadFormsAndData() {
+    this.http
+      .get(`http://localhost:3000/form-group/1?role=${this.roleName}`)
+      .pipe(
+        switchMap((formConfig: any) => {
+          formConfig.forms.forEach((form: any) => {
+            this.fieldsByForm[form.formName] = form.fields;
+            this.formGroups[form.formName] = this.buildForm(form.fields);
+          });
+          return this.http.get('../assets/data.json');
+        }),
+        tap((data: any) => {
+          this.formGroups['support']?.patchValue(data);
+          this.formsLoaded = true;
+        })
+      )
+      .subscribe({
+        next: () => console.log('Formularios y datos cargados exitosamente'),
+        error: (err) => console.error('Error en la carga secuencial:', err),
+      });
   }
 }
